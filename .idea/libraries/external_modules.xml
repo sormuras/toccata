@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="external-modules">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/.bach/external-modules" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/.bach/external-modules" />
+    </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/.bach/external-modules" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/.bach/external-modules" recursive="false" type="SOURCES" />
+  </library>
+</component>

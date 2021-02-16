@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="bach-bin">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/.bach/bin" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/.bach/bin/com.github.sormuras.bach@17-ea.jar!/" />
+    </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/.bach/bin" recursive="false" />
+  </library>
+</component>
