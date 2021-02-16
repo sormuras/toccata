@@ -12,8 +12,35 @@ on:
         required: false
         default: 'Because...'
 jobs:
+
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      date: ${{ steps.version.outputs.date }}
+      datetime: ${{ steps.version.outputs.datetime }}
+      sha: ${{ steps.version.outputs.sha }}
+      tag: ${{ steps.version.outputs.tag }}
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - name: 'Compute short sha, tag, and version strings'
+        id: version
+        run: |
+          DATE=$(date -u '+%Y.%m.%d')
+          DATETIME=$(date -u '+%Y.%m.%d.%H.%M.%S')
+          echo "::set-output name=date::${DATE}"
+          echo "::set-output name=datetime::${DATETIME}"
+          SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+          TAG=1-ea
+          VERSION=${TAG}+${SHA}
+          echo "::set-output name=sha::${SHA}"
+          echo "::set-output name=tag::${TAG}"
+          echo "::set-output name=version::${VERSION}"
+
   build:
     name: "Build (JDK-${{ matrix.java }}, ${{ matrix.os }})"
+    needs: [ setup ]
+    env:
+      VERSION: ${{ needs.setup.outputs.version }}
     strategy:
       fail-fast: false
       matrix:
@@ -29,10 +56,10 @@ jobs:
           java-version: ${{ matrix.java }}
       - name: 'Build with Bach'
         shell: bash
-        run: .bach/bin/bach --verbose build
-      - name: 'Upload linked application'
+        run: .bach/bin/bach --verbose --project-version ${{ env.VERSION }} build
+      - name: 'Upload custom runtime image'
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ github.event.repository.name }}-image-${{ matrix.os }}-${{ github.sha }}
+          name: ${{ github.event.repository.name }}-image-${{ matrix.os }}-${{ env.VERSION }}
           path: |
             .bach/workspace/image
