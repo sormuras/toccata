@@ -1,9 +1,11 @@
 package bach.info;
 
-import com.github.sormuras.bach.*;
-import com.github.sormuras.bach.lookup.GitHubReleasesModuleLookup;
+import com.github.sormuras.bach.Bach;
+import com.github.sormuras.bach.Command;
+import com.github.sormuras.bach.Libraries;
+import com.github.sormuras.bach.Options;
+import com.github.sormuras.bach.ProjectInfo;
 import com.github.sormuras.bach.lookup.JavaFXModuleLookup;
-import com.github.sormuras.bach.lookup.ToolProvidersModuleLookup;
 import java.nio.file.Files;
 
 public class Builder extends Bach {
@@ -21,10 +23,32 @@ public class Builder extends Bach {
 
   @Override
   public Libraries computeProjectLibraries(ProjectInfo info) {
+    var jacksonVersion = "2.12.1";
+    var attachVersion = "4.0.10";
     return super.computeProjectLibraries(info)
-        .withModuleLookup(new JavaFXModuleLookup("16-ea+6"))
-        .withModuleLookup(new GitHubReleasesModuleLookup(this))
-        .withModuleLookup(new ToolProvidersModuleLookup(this, base().externals()));
+        .withModuleLookup(new JavaFXModuleLookup("16-ea+7"))
+        .withModuleLookup(new FXGLModuleLookup("11.13"))
+        .withModuleLookup(
+            Libraries.lookup("com.fasterxml.jackson.annotation")
+                .via("com.fasterxml.jackson.core:jackson-annotations:" + jacksonVersion))
+        .withModuleLookup(
+            Libraries.lookup("com.fasterxml.jackson.core")
+                .via("com.fasterxml.jackson.core:jackson-core:" + jacksonVersion))
+        .withModuleLookup(
+            Libraries.lookup("com.fasterxml.jackson.databind")
+                .via("com.fasterxml.jackson.core:jackson-databind:" + jacksonVersion))
+        .withModuleLookup(
+            Libraries.lookup("com.gluonhq.attach.audio")
+                .via("com.gluonhq.attach:audio:" + attachVersion))
+        .withModuleLookup(
+            Libraries.lookup("com.gluonhq.attach.lifecycle")
+                .via("com.gluonhq.attach:lifecycle:" + attachVersion))
+        .withModuleLookup(
+            Libraries.lookup("com.gluonhq.attach.storage")
+                .via("com.gluonhq.attach:storage:" + attachVersion))
+        .withModuleLookup(
+            Libraries.lookup("com.gluonhq.attach.util")
+                .via("com.gluonhq.attach:util:" + attachVersion));
   }
 
   @Override
