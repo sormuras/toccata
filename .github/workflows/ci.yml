@@ -29,20 +29,16 @@ jobs:
           java-version: ${{ matrix.java }}
       - name: 'Build with Bach'
         shell: bash
-        run: .bach/bin/bach build
-      - name: 'Package self-contained Java application'
-        shell: bash
-        run: |
-          jpackage --verbose \
-          --name Toccata \
-          --description "Tower Crush Cannon Tavern" \
-          --vendor "Christian Stein" \
-          --runtime-image .bach/workspace/image \
-          --module com.github.sormuras.toccata/com.github.sormuras.toccata.Toccata \
-          --dest .bach/workspace/package
+        run: .bach/bin/bach --verbose build
+      - name: 'Upload linked application'
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ github.event.repository.name }}-image-${{ matrix.os }}-${{ github.sha }}
+          path: |
+            .bach/workspace/image
       - name: 'Upload packaged application'
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ github.event.repository.name }}-${{ matrix.os }}-${{ github.sha }}
+          name: ${{ github.event.repository.name }}-package-${{ matrix.os }}-${{ github.sha }}
           path: |
             .bach/workspace/package

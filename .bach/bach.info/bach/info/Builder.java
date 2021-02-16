@@ -6,6 +6,7 @@ import com.github.sormuras.bach.Libraries;
 import com.github.sormuras.bach.Options;
 import com.github.sormuras.bach.ProjectInfo;
 import com.github.sormuras.bach.lookup.JavaFXModuleLookup;
+import java.io.File;
 import java.nio.file.Files;
 
 public class Builder extends Bach {
@@ -79,11 +80,24 @@ public class Builder extends Bach {
             .add("--main-class", module + ".Toccata")
             .add("-C", destination.resolve(module), "."));
 
+    var path = String.join(File.pathSeparator, modules.toString(), base().externals().toString());
+    var image = base().workspace("image");
     run(
         Command.jlink()
             .add("--launcher", "toccata=" + module)
             .add("--add-modules", module)
-            .add("--module-path", ".bach/workspace/modules;.bach/external-modules")
-            .add("--output", ".bach/workspace/image"));
+            .add("--module-path", path)
+            .add("--output", image));
+
+    if (System.getenv().containsKey("CI"))
+      run(
+          Command.of("jpackage")
+              .add("--verbose")
+              .add("--name", "Toccata")
+              .add("--description", "Tower Crush Cannon Tavern")
+              .add("--vendor", "Christian Stein")
+              .add("--runtime-image", image)
+              .add("--module", module)
+              .add("--dest", base().workspace("package")));
   }
 }
