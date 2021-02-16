@@ -15,7 +15,7 @@ public class ToccataEntityFactory implements EntityFactory {
   @Spawns("enemy")
   public Entity newEnemy(SpawnData data) {
     return FXGL.entityBuilder(data)
-        .view(new Rectangle(40, 40, Color.RED))
+        .view("stone.png")
         .with(new ProjectileComponent(new Point2D(1, 0), FXGL.random(1, 300)))
         .build();
   }
