@@ -7,7 +7,9 @@ import com.github.sormuras.bach.Options;
 import com.github.sormuras.bach.ProjectInfo;
 import com.github.sormuras.bach.lookup.JavaFXModuleLookup;
 import java.io.File;
+import java.nio.file.DirectoryNotEmptyException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class Builder extends Bach {
   public static void main(String... args) {
@@ -78,10 +80,12 @@ public class Builder extends Bach {
             .add("--create")
             .add("--file", file)
             .add("--main-class", module + ".Toccata")
-            .add("-C", destination.resolve(module), "."));
+            .add("-C", destination.resolve(module), ".")
+            .add("-C", module, ".") // assets and sources
+        );
 
     var path = String.join(File.pathSeparator, modules.toString(), base().externals().toString());
-    var image = base().workspace("image");
+    var image = deleteDirectories(base().workspace("image"));
     run(
         Command.jlink()
             .add("--launcher", "toccata=" + module)
@@ -99,5 +103,23 @@ public class Builder extends Bach {
               .add("--runtime-image", image)
               .add("--module", module)
               .add("--dest", base().workspace("package")));
+  }
+
+  static Path deleteDirectories(Path directory) {
+    try {
+      Files.deleteIfExists(directory);
+      return directory;
+    } catch (DirectoryNotEmptyException ignored) {
+      // fall through
+    } catch (Exception e) {
+      throw new RuntimeException("Delete directories failed: " + directory, e);
+    }
+    try (var stream = Files.walk(directory)) {
+      var selected = stream.sorted((p, q) -> -p.compareTo(q));
+      for (var path : selected.toArray(Path[]::new)) Files.deleteIfExists(path);
+    } catch (Exception e) {
+      throw new RuntimeException("Delete directories failed: " + directory, e);
+    }
+    return directory;
   }
 }
