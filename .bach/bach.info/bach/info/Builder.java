@@ -89,7 +89,7 @@ public class Builder extends Bach {
             .add("--module-path", path)
             .add("--output", image));
 
-    if (System.getenv().containsKey("CI"))
+    if (Boolean.getBoolean("jpackage"))
       run(
           Command.of("jpackage")
               .add("--verbose")

@@ -36,9 +36,3 @@ jobs:
           name: ${{ github.event.repository.name }}-image-${{ matrix.os }}-${{ github.sha }}
           path: |
             .bach/workspace/image
-      - name: 'Upload packaged application'
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{ github.event.repository.name }}-package-${{ matrix.os }}-${{ github.sha }}
-          path: |
-            .bach/workspace/package
