@@ -12,21 +12,21 @@ import javafx.scene.shape.Rectangle;
 
 public class ToccataEntityFactory implements EntityFactory {
 
-  @Spawns("enemy")
-  public Entity newEnemy(SpawnData data) {
-    return FXGL.entityBuilder(data)
-        .view("stone.png")
-        .with(new ProjectileComponent(new Point2D(1, 0), FXGL.random(1, 300)))
-        .build();
-  }
+    @Spawns("enemy")
+    public Entity newEnemy(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .view("stone.png")
+                .with(new ProjectileComponent(new Point2D(1, 0), FXGL.random(1, 300)))
+                .build();
+    }
 
-  @Spawns("ally")
-  public Entity newAlly(SpawnData data) {
-    return FXGL.entityBuilder(data)
-        .view(new Rectangle(40, 40, Color.GREEN))
-        .with(
-            new ProjectileComponent(
-                new Point2D(FXGL.random(-1d, 1d), FXGL.random(-1d, 1d)), FXGL.random(50, 200)))
-        .build();
-  }
+    @Spawns("ally")
+    public Entity newAlly(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .view("points.png")
+                .with(
+                        new ProjectileComponent(
+                                new Point2D(FXGL.random(-1d, 1d), FXGL.random(-1d, 1d)), FXGL.random(50, 200)))
+                .build();
+    }
 }
