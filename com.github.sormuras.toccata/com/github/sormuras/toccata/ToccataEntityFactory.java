@@ -7,8 +7,6 @@ import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
 import javafx.geometry.Point2D;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 public class ToccataEntityFactory implements EntityFactory {
 
@@ -27,15 +25,6 @@ public class ToccataEntityFactory implements EntityFactory {
                 .with(
                         new ProjectileComponent(
                                 new Point2D(FXGL.random(-1d, 1d), FXGL.random(-1d, 1d)), FXGL.random(50, 200)))
-                .build();
-    }
-
-    private Entity player;
-
-    @Spawns("player")
-    public Entity newPlayer(SpawnData data) {
-        return FXGL.entityBuilder(data)
-                .view(new Rectangle(25, 25, Color.BLUE))
                 .build();
     }
 }
