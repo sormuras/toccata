@@ -13,8 +13,10 @@ public class ToccataEntityFactory implements EntityFactory {
     @Spawns("enemy")
     public Entity newEnemy(SpawnData data) {
         return FXGL.entityBuilder(data)
-                .view("stone.png")
-                .with(new ProjectileComponent(new Point2D(1, 0), FXGL.random(1, 300)))
+                .view("rocket.png")
+                .with(
+                        new ProjectileComponent(
+                                new Point2D(FXGL.random(-1d, 1d), FXGL.random(-1d, 1d)), FXGL.random(50, 200)))
                 .build();
     }
 
