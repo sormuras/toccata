@@ -19,7 +19,10 @@ public class Toccata extends GameApplication {
 
   @Override
   protected void initInput() {
-    FXGL.onKeyDown(KeyCode.F, () -> FXGL.getNotificationService().pushNotification("Hello world"));
+    FXGL.onKeyDown(KeyCode.F, () -> FXGL.getNotificationService().pushNotification("Hello world!"));
+    FXGL.onKeyDown(KeyCode.D, () -> FXGL.getNotificationService().pushNotification("Yeah!"));
+    FXGL.onKeyDown(KeyCode.DOWN, () -> FXGL.getNotificationService().pushNotification("Points -1!"));
+    FXGL.onKeyDown(KeyCode.UP, () -> FXGL.getNotificationService().pushNotification("Points +1!"));
   }
 
   @Override
