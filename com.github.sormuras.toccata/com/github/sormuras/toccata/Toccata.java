@@ -26,19 +26,19 @@ public class Toccata extends GameApplication {
     FXGL.onKeyDown(KeyCode.DOWN, () -> FXGL.getNotificationService().pushNotification("Points -1!"));
     FXGL.onKeyDown(KeyCode.UP, () -> FXGL.getNotificationService().pushNotification("Points +1!"));
     FXGL.onKey(KeyCode.D, () -> {
-      player.translateX(5); // move right 5 pixels
+      player.translateX(10);
     });
 
     FXGL.onKey(KeyCode.A, () -> {
-      player.translateX(-5); // move left 5 pixels
+      player.translateX(-10);
     });
 
     FXGL.onKey(KeyCode.W, () -> {
-      player.translateY(-5); // move up 5 pixels
+      player.translateY(-10);
     });
 
     FXGL.onKey(KeyCode.S, () -> {
-      player.translateY(5); // move down 5 pixels
+      player.translateY(10);
     });
   }
   private Entity player;
