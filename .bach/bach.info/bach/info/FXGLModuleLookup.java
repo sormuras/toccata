@@ -1,10 +1,11 @@
 package bach.info;
 
+import com.github.sormuras.bach.Bach;
 import com.github.sormuras.bach.lookup.Maven;
 import com.github.sormuras.bach.lookup.ModuleLookup;
 import java.util.Optional;
 
-public record FXGLModuleLookup(String version) implements ModuleLookup {
+public record FXGLModuleLookup(Bach bach, String version) implements ModuleLookup {
 
   private static final String MODULE_PREFIX = "com.almasb.fxgl";
   private static final String MAVEN_GROUP = "com.github.almasb";
@@ -17,6 +18,22 @@ public record FXGLModuleLookup(String version) implements ModuleLookup {
   }
 
   private Optional<String> via(String artifact) {
+    if (version.equals("dev-SNAPSHOT")) {
+      var repository = "https://oss.sonatype.org/content/repositories/snapshots";
+      var snapshot = repository + "/com/github/almasb/" + artifact + "/dev-SNAPSHOT/";
+      var metadata = bach.browser().read(snapshot + "maven-metadata.xml");
+      var timestamp = find("timestamp", metadata);
+      var build = find("buildNumber", metadata);
+      var file = artifact + "-dev-" + timestamp + "-" + build + ".jar";
+      return Optional.of(snapshot + file);
+    }
     return Optional.of(Maven.central(MAVEN_GROUP, artifact, version));
+  }
+
+  private static String find(String tag, String text) {
+    int start = text.indexOf("<" + tag + ">");
+    int end = text.indexOf("</" + tag + ">");
+    if (start < 0 || end < 0) return "?";
+    return text.substring(start + 1 + tag.length() + 1, end);
   }
 }

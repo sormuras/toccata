@@ -30,7 +30,7 @@ public class Builder extends Bach {
     var attachVersion = "4.0.10";
     return super.computeProjectLibraries(info)
         .withModuleLookup(new JavaFXModuleLookup("16-ea+7"))
-        .withModuleLookup(new FXGLModuleLookup("11.13"))
+        .withModuleLookup(new FXGLModuleLookup(this, "dev-SNAPSHOT"))
         .withModuleLookup(
             Libraries.lookup("com.fasterxml.jackson.annotation")
                 .via("com.fasterxml.jackson.core:jackson-annotations:" + jacksonVersion))
