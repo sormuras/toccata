@@ -2,11 +2,11 @@
 <module type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$MODULE_DIR$/com.github.sormuras.toccata">
-      <sourceFolder url="file://$MODULE_DIR$/com.github.sormuras.toccata" isTestSource="false" />
+    <content url="file://$MODULE_DIR$/com.github.sormuras.toccata.expansion">
+      <sourceFolder url="file://$MODULE_DIR$/com.github.sormuras.toccata.expansion" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="com.github.sormuras.toccata.expansion" scope="RUNTIME" />
+    <orderEntry type="module" module-name="com.github.sormuras.toccata" />
     <orderEntry type="library" name="external-modules" level="project" />
     <orderEntry type="inheritedJdk" />
   </component>

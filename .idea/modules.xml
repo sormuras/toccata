@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/bach.info.iml" filepath="$PROJECT_DIR$/.idea/bach.info.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/com.github.sormuras.toccata.iml" filepath="$PROJECT_DIR$/.idea/com.github.sormuras.toccata.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/com.github.sormuras.toccata.expansion.iml" filepath="$PROJECT_DIR$/.idea/com.github.sormuras.toccata.expansion.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/toccata.iml" filepath="$PROJECT_DIR$/.idea/toccata.iml" />
     </modules>
   </component>
