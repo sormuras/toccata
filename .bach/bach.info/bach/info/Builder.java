@@ -56,13 +56,14 @@ public class Builder extends Bach {
 
   @Override
   public void buildProjectMainSpace() throws Exception {
-    var module = "com.github.sormuras.toccata";
+    var toccata = "com.github.sormuras.toccata";
+    var expansion = "com.github.sormuras.toccata.expansion";
     var destination = base().workspace("classes");
     var modules = base().workspace("modules");
 
     run(
         Command.javac()
-            .add("--module", module)
+            .add("--module", toccata + "," + expansion)
             .add("--module-version", "0")
             .add("--module-source-path", ".")
             .add("--module-path", Bach.EXTERNALS)
@@ -73,23 +74,31 @@ public class Builder extends Bach {
             .add("-d", destination));
 
     Files.createDirectories(modules);
-    var file = modules.resolve(computeMainJarFileName(module));
     run(
         Command.jar()
             .add("--verbose")
             .add("--create")
-            .add("--file", file)
-            .add("--main-class", module + ".Toccata")
-            .add("-C", destination.resolve(module), ".")
-            .add("-C", module, ".") // assets and sources
+            .add("--file", modules.resolve(computeMainJarFileName(toccata)))
+            .add("--main-class", toccata + ".Toccata")
+            .add("-C", destination.resolve(toccata), ".")
+            .add("-C", toccata, ".") // assets and sources
+        );
+    run(
+        Command.jar()
+            .add("--verbose")
+            .add("--create")
+            .add("--file", modules.resolve(computeMainJarFileName(expansion)))
+            .add("-C", destination.resolve(expansion), ".")
+            .add("-C", expansion, ".") // assets and sources
         );
 
     var path = String.join(File.pathSeparator, modules.toString(), base().externals().toString());
     var image = deleteDirectories(base().workspace("image"));
     run(
         Command.jlink()
-            .add("--launcher", "toccata=" + module)
-            .add("--add-modules", module)
+            .add("--launcher", "toccata=" + toccata)
+            .add("--add-modules", toccata)
+            .add("--add-modules", expansion)
             .add("--module-path", path)
             .add("--output", image));
 
@@ -101,7 +110,7 @@ public class Builder extends Bach {
               .add("--description", "Tower Crush Cannon Tavern")
               .add("--vendor", "Christian Stein")
               .add("--runtime-image", image)
-              .add("--module", module)
+              .add("--module", toccata)
               .add("--dest", base().workspace("package")));
   }
 
