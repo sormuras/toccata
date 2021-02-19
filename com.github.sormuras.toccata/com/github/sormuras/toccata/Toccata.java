@@ -5,6 +5,7 @@ import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
+import java.util.ServiceLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
@@ -62,5 +63,6 @@ public class Toccata extends GameApplication {
             .view(new Rectangle(25, 25, Color.BLUE))
             .buildAndAttach();
 
+    ServiceLoader.load(ToccataPlugin.class).forEach(plugin -> plugin.initGame(this));
   }
 }
