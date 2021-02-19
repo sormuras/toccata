@@ -5,6 +5,6 @@ module com.github.sormuras.toccata {
   exports com.github.sormuras.toccata to
       com.almasb.fxgl.core;
 
-  opens assets.textures to
+  opens com.github.sormuras.toccata.assets.textures to
       com.almasb.fxgl.all;
 }

@@ -18,7 +18,9 @@ public class Toccata extends GameApplication {
   }
 
   @Override
-  protected void initSettings(GameSettings settings) {}
+  protected void initSettings(GameSettings settings) {
+    settings.setBasePackageForAssets(getClass().getModule().getName());
+  }
 
   @Override
   protected void initInput() {
