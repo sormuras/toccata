@@ -13,21 +13,33 @@ import javafx.util.Duration;
 
 public class Toccata extends GameApplication {
 
+  @Override
+  protected void initSettings(GameSettings settings) {
+    settings.setWidth(1000);
+    settings.setHeight(900);
+    settings.setTitle("Toccata");
+  }
+
+
   public static void main(String... args) {
     launch(args);
   }
 
-  @Override
-  protected void initSettings(GameSettings settings) {}
+
 
   @Override
   protected void initInput() {
     FXGL.onKeyDown(KeyCode.F, () -> FXGL.getNotificationService().pushNotification("Hello world!"));
+
     FXGL.onKeyDown(KeyCode.DOWN, () -> FXGL.getNotificationService().pushNotification("Points -1!"));
+
     FXGL.onKeyDown(KeyCode.UP, () -> FXGL.getNotificationService().pushNotification("Points +1!"));
+
+    FXGL.onKeyDown(KeyCode.E, () -> FXGL.getSettings());
+
     FXGL.onKey(KeyCode.D, () -> {
       player.translateX(10);
-    });
+            });
 
     FXGL.onKey(KeyCode.A, () -> {
       player.translateX(-10);
@@ -57,7 +69,7 @@ public class Toccata extends GameApplication {
 
     player = FXGL.entityBuilder()
             .at(300, 300)
-            .view(new Rectangle(25, 25, Color.BLUE))
+            .view(new Rectangle(40, 40, Color.BLUE))
             .buildAndAttach();
 
   }

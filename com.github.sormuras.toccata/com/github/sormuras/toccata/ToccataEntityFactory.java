@@ -16,7 +16,7 @@ public class ToccataEntityFactory implements EntityFactory {
                 .view("rocket.png")
                 .with(
                         new ProjectileComponent(
-                                new Point2D(FXGL.random(-1d, 1d), FXGL.random(-1d, 1d)), FXGL.random(50, 200)))
+                                new Point2D(FXGL.random(-0.5d, 0.5d), FXGL.random(-0.5d, 0.5d)), FXGL.random(50, 200)))
                 .build();
     }
 
@@ -26,7 +26,7 @@ public class ToccataEntityFactory implements EntityFactory {
                 .view("points.png")
                 .with(
                         new ProjectileComponent(
-                                new Point2D(FXGL.random(-1d, 1d), FXGL.random(-1d, 1d)), FXGL.random(50, 200)))
+                                new Point2D(FXGL.random(-0.5d, 0.5d), FXGL.random(-0.5d, 0.5d)), FXGL.random(50, 200)))
                 .build();
     }
 }
