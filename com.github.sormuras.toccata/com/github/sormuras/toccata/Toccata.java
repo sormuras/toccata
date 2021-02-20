@@ -23,25 +23,16 @@ public class Toccata extends GameApplication {
 
   @Override
   protected void initInput() {
-    FXGL.onKeyDown(KeyCode.F, () -> FXGL.getNotificationService().pushNotification("Hello world!"));
-    FXGL.onKeyDown(KeyCode.DOWN, () -> FXGL.getNotificationService().pushNotification("Points -1!"));
-    FXGL.onKeyDown(KeyCode.UP, () -> FXGL.getNotificationService().pushNotification("Points +1!"));
-    FXGL.onKey(KeyCode.D, () -> {
-      player.translateX(10);
-    });
-
-    FXGL.onKey(KeyCode.A, () -> {
-      player.translateX(-10);
-    });
-
-    FXGL.onKey(KeyCode.W, () -> {
-      player.translateY(-10);
-    });
-
-    FXGL.onKey(KeyCode.S, () -> {
-      player.translateY(10);
-    });
+    var notes = FXGL.getNotificationService();
+    FXGL.onKeyDown(KeyCode.F, () -> notes.pushNotification("Hello world!"));
+    FXGL.onKeyDown(KeyCode.DOWN, () -> notes.pushNotification("Points -1!"));
+    FXGL.onKeyDown(KeyCode.UP, () -> notes.pushNotification("Points +1!"));
+    FXGL.onKey(KeyCode.D, () -> player.translateX(10));
+    FXGL.onKey(KeyCode.A, () -> player.translateX(-10));
+    FXGL.onKey(KeyCode.W, () -> player.translateY(-10));
+    FXGL.onKey(KeyCode.S, () -> player.translateY(10));
   }
+
   private Entity player;
 
   @Override
@@ -56,10 +47,8 @@ public class Toccata extends GameApplication {
         },
         Duration.seconds(0.5));
 
-    player = FXGL.entityBuilder()
-            .at(300, 300)
-            .view(new Rectangle(25, 25, Color.BLUE))
-            .buildAndAttach();
+    player =
+        FXGL.entityBuilder().at(300, 300).view(new Rectangle(25, 25, Color.BLUE)).buildAndAttach();
 
     ServiceLoader.load(ToccataPlugin.class).forEach(plugin -> plugin.initGame(this));
   }
