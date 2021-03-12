@@ -19,7 +19,11 @@ public class Toccata extends GameApplication {
   }
 
   @Override
-  protected void initSettings(GameSettings settings) {}
+  protected void initSettings(GameSettings settings) {
+    settings.setWidth(1100);
+    settings.setHeight(1000);
+    settings.setTitle("Toccata");
+  }
 
   @Override
   protected void initInput() {
