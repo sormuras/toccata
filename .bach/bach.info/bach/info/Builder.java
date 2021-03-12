@@ -2,16 +2,19 @@ package bach.info;
 
 import com.github.sormuras.bach.Bach;
 import com.github.sormuras.bach.Command;
-import com.github.sormuras.bach.Libraries;
 import com.github.sormuras.bach.Options;
 import com.github.sormuras.bach.ProjectInfo;
 import com.github.sormuras.bach.lookup.JavaFXModuleLookup;
-import java.io.File;
+import com.github.sormuras.bach.lookup.ModuleLookup;
+import com.github.sormuras.bach.project.Libraries;
+import com.github.sormuras.bach.project.Settings;
 import java.nio.file.DirectoryNotEmptyException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 public class Builder extends Bach {
+
   public static void main(String... args) {
     Bach.main(args);
   }
@@ -25,81 +28,50 @@ public class Builder extends Bach {
   }
 
   @Override
-  public Libraries computeProjectLibraries(ProjectInfo info) {
+  public Libraries computeProjectLibraries(ProjectInfo info, Settings settings) {
     var jacksonVersion = "2.12.1";
     var attachVersion = "4.0.10";
-    return super.computeProjectLibraries(info)
-        .withModuleLookup(new JavaFXModuleLookup("16-ea+7"))
-        .withModuleLookup(new FXGLModuleLookup(this, "dev-SNAPSHOT"))
-        .withModuleLookup(
-            Libraries.lookup("com.fasterxml.jackson.annotation")
+    return super.computeProjectLibraries(info, settings)
+        .with(new JavaFXModuleLookup("16"))
+        .with(new FXGLModuleLookup(this, "11.14"))
+        .with(
+            ModuleLookup.external("com.fasterxml.jackson.annotation")
                 .via("com.fasterxml.jackson.core:jackson-annotations:" + jacksonVersion))
-        .withModuleLookup(
-            Libraries.lookup("com.fasterxml.jackson.core")
+        .with(
+            ModuleLookup.external("com.fasterxml.jackson.core")
                 .via("com.fasterxml.jackson.core:jackson-core:" + jacksonVersion))
-        .withModuleLookup(
-            Libraries.lookup("com.fasterxml.jackson.databind")
+        .with(
+            ModuleLookup.external("com.fasterxml.jackson.databind")
                 .via("com.fasterxml.jackson.core:jackson-databind:" + jacksonVersion))
-        .withModuleLookup(
-            Libraries.lookup("com.gluonhq.attach.audio")
+        .with(
+            ModuleLookup.external("com.gluonhq.attach.audio")
                 .via("com.gluonhq.attach:audio:" + attachVersion))
-        .withModuleLookup(
-            Libraries.lookup("com.gluonhq.attach.lifecycle")
+        .with(
+            ModuleLookup.external("com.gluonhq.attach.lifecycle")
                 .via("com.gluonhq.attach:lifecycle:" + attachVersion))
-        .withModuleLookup(
-            Libraries.lookup("com.gluonhq.attach.storage")
+        .with(
+            ModuleLookup.external("com.gluonhq.attach.storage")
                 .via("com.gluonhq.attach:storage:" + attachVersion))
-        .withModuleLookup(
-            Libraries.lookup("com.gluonhq.attach.util")
+        .with(
+            ModuleLookup.external("com.gluonhq.attach.util")
                 .via("com.gluonhq.attach:util:" + attachVersion));
   }
 
   @Override
   public void buildProjectMainSpace() throws Exception {
+
+    super.buildProjectMainSpace();
+
     var toccata = "com.github.sormuras.toccata";
     var expansion = "com.github.sormuras.toccata.expansion";
-    var destination = base().workspace("classes");
-    var modules = base().workspace("modules");
-
-    run(
-        Command.javac()
-            .add("--module", toccata + "," + expansion)
-            .add("--module-version", "0")
-            .add("--module-source-path", ".")
-            .add("--module-path", Bach.EXTERNALS)
-            .add("-encoding", "UTF-8")
-            .add("-g")
-            .add("-parameters")
-            .add("-Xlint")
-            .add("-d", destination));
-
-    Files.createDirectories(modules);
-    run(
-        Command.jar()
-            .add("--verbose")
-            .add("--create")
-            .add("--file", modules.resolve(computeMainJarFileName(toccata)))
-            .add("--main-class", toccata + ".Toccata")
-            .add("-C", destination.resolve(toccata), ".")
-            .add("-C", toccata, ".") // assets and sources
-        );
-    run(
-        Command.jar()
-            .add("--verbose")
-            .add("--create")
-            .add("--file", modules.resolve(computeMainJarFileName(expansion)))
-            .add("-C", destination.resolve(expansion), ".")
-            .add("-C", expansion, ".") // assets and sources
-        );
-
-    var path = String.join(File.pathSeparator, modules.toString(), base().externals().toString());
-    var image = deleteDirectories(base().workspace("image"));
+    var paths = List.of(folders().workspace("modules"), folders().externalModules());
+    var image = deleteDirectories(folders().workspace("image"));
     run(
         Command.jlink()
             .add("--launcher", "toccata=" + toccata)
             .add("--add-modules", toccata)
             .add("--add-modules", expansion)
-            .add("--module-path", path)
+            .add("--module-path", paths)
             .add("--output", image));
 
     if (Boolean.getBoolean("jpackage"))
@@ -111,7 +83,7 @@ public class Builder extends Bach {
               .add("--vendor", "Christian Stein")
               .add("--runtime-image", image)
               .add("--module", toccata)
-              .add("--dest", base().workspace("package")));
+              .add("--dest", folders().workspace("package")));
   }
 
   static Path deleteDirectories(Path directory) {
