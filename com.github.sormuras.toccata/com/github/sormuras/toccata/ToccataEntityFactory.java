@@ -6,17 +6,16 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.Spawns;
+import java.net.URL;
 import javafx.geometry.Point2D;
 
 public class ToccataEntityFactory implements EntityFactory {
 
-  private static final String prefix = "/com/github/sormuras/toccata/assets/textures/";
-
   @Spawns("enemy")
   public Entity newEnemy(SpawnData data) {
-
+    var rocket = url("textures/rocket.png");
     return FXGL.entityBuilder(data)
-        .view(prefix + "rocket.png")
+        .view(FXGL.getAssetLoader().loadTexture(rocket))
         .with(
             new ProjectileComponent(
                 new Point2D(FXGL.random(-1d, 1d), FXGL.random(-1d, 1d)), FXGL.random(50, 200)))
@@ -25,11 +24,20 @@ public class ToccataEntityFactory implements EntityFactory {
 
   @Spawns("ally")
   public Entity newAlly(SpawnData data) {
+    var points = url("textures/points.png");
     return FXGL.entityBuilder(data)
-        .view(prefix + "points.png")
+        .view(FXGL.getAssetLoader().loadTexture(points))
         .with(
             new ProjectileComponent(
                 new Point2D(FXGL.random(-1d, 1d), FXGL.random(-1d, 1d)), FXGL.random(50, 200)))
         .build();
+  }
+
+  String getUrlPrefixForAssets() {
+    return '/' + getClass().getModule().getName().replace('.', '/') + "/assets/";
+  }
+
+  URL url(String name) {
+    return getClass().getResource(getUrlPrefixForAssets() + name);
   }
 }

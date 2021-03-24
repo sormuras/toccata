@@ -3,7 +3,6 @@ import com.github.sormuras.bach.ProjectInfo.External;
 import com.github.sormuras.bach.ProjectInfo.Externals;
 import com.github.sormuras.bach.ProjectInfo.Externals.Name;
 import com.github.sormuras.bach.ProjectInfo.Tools;
-import com.github.sormuras.bach.ProjectInfo.Tweak;
 import com.github.sormuras.bach.project.JavaStyle;
 
 @ProjectInfo(
@@ -12,11 +11,6 @@ import com.github.sormuras.bach.project.JavaStyle;
     format = JavaStyle.GOOGLE,
     includeSourceFilesIntoModules = true,
     tools = @Tools(skip = "javadoc"),
-    tweaks =
-        @Tweak(
-            tool = "jlink",
-            option = "--launcher",
-            value = "toccata=com.github.sormuras.toccata/com.github.sormuras.toccata.Toccata"),
     // <editor-fold desc="Libraries - External Modules">
     lookupExternal = {
       // Jackson
@@ -39,12 +33,12 @@ import com.github.sormuras.bach.project.JavaStyle;
       // Kotlin
       @External(module = "kotlin.stdlib", via = "org.jetbrains.kotlin:kotlin-stdlib:1.4.30"),
     },
-    lookupExternals = @Externals(name = Name.JAVAFX, version = "16")
+    lookupExternals = {
+        @Externals(name = Name.JAVAFX, version = "16"),
+        @Externals(name = Name.FXGL, version = "11.14")
+    }
     // </editor-fold>
     )
 module bach.info {
   requires com.github.sormuras.bach;
-
-  provides com.github.sormuras.bach.Bach.Provider with
-      bach.info.Builder;
 }

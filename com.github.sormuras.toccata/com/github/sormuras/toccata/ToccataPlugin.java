@@ -4,7 +4,7 @@ import java.net.URL;
 
 public interface ToccataPlugin {
 
-  void initGame(Toccata toccata);
+  void initGame(Main toccata);
 
   default String getUrlPrefixForAssets() {
     return '/' + getClass().getModule().getName().replace('.', '/') + "/assets/";

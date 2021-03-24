@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Play Toccata" type="Application" factoryName="Application">
-    <option name="MAIN_CLASS_NAME" value="com.github.sormuras.toccata.Toccata" />
+    <option name="MAIN_CLASS_NAME" value="com.github.sormuras.toccata.Main" />
     <module name="com.github.sormuras.toccata" />
     <extension name="coverage">
       <pattern>
